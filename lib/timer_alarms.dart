@@ -1,12 +1,31 @@
 import 'package:alarm/alarm.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:drink_your_tea/audio_control.dart';
+// import 'package:drink_your_tea/audio_control.dart';
 import 'package:just_audio/just_audio.dart';
+import 'dart:async';
 
 
 class AlarmManager {
 
   static final AudioPlayer _player = AudioPlayer();
+
+  static const String pathAudio               = "assets/ButterflysWings.mp3";
+  static const bool loopAudio                 = true;
+  static const bool vibrate                   = true;
+  static const double volume                  = 0.8;
+  static const double fadeDuration            = 3.0;
+  static const bool enableNotificationOnKill  = true;
+
+  static const int brewingAlarmID             = 42;
+  static const String brewingTitle            = 'Your tea is done brewing';
+  static const String brewingBody             = 'The second timer will notify you when your tea has drinking temperature';
+  static const int coolingAlarmID             = 43;
+  static const String coolingTitle            = 'Your tea is cool now 8-)';
+  static const String coolingBody             = 'Enjoy it!';
+
+  static Timer brewingTimer                   = Timer(const Duration(minutes: 1), () {null;});
+  static Timer coolingTimer                   = Timer(const Duration(minutes: 1), () {null;});
+
 
   static bool isAlarmCompatible() {
     if (kIsWeb) {
@@ -16,76 +35,92 @@ class AlarmManager {
     }
   }
 
-  static List<AlarmSettings> getAlarms() {
-    List<AlarmSettings> alarms = Alarm.getAlarms();
-    alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
-    return alarms;
-  }
 
-  static void setAlarm(String alarmType) {
+  static setAlarm(
+    String alarmType, DateTime timeAtStart, int delayMin) {
 
     if (alarmType == "brewing" && isAlarmCompatible()) {
-      final alarmSettingsBrewing = AlarmSettings(
-        id: 42,
-        dateTime: DateTime.now().add(const Duration(seconds: 1)),
-        assetAudioPath: 'sounds/ButterflysWings.mp3',
-        loopAudio: true,
-        vibrate: true,
-        volume: 0.8,
-        fadeDuration: 3.0,
-        notificationTitle: 'Your tea is done brewing',
-        notificationBody: 'If you have set a cool-off timer, then you will receive another notification when your tea is at the right temperaure',
-        enableNotificationOnKill: true,
+
+      // Set up brewing alarm
+      DateTime scheduledTime      = timeAtStart.add(Duration(minutes: delayMin));
+      AlarmSettings alarmSettingsBrewing = AlarmSettings(
+        id:                       AlarmManager.brewingAlarmID,
+        dateTime:                 scheduledTime,
+        assetAudioPath:           AlarmManager.pathAudio,
+        loopAudio:                AlarmManager.loopAudio,
+        vibrate:                  AlarmManager.vibrate,
+        volume:                   AlarmManager.volume,
+        fadeDuration:             AlarmManager.fadeDuration,
+        notificationTitle:        AlarmManager.brewingTitle,
+        notificationBody:         AlarmManager.brewingBody,
+        enableNotificationOnKill: AlarmManager.enableNotificationOnKill,
       );
+      print("set new brewing alarm");
       Alarm.set(alarmSettings: alarmSettingsBrewing);
+
     } else if (alarmType == "cooling" && isAlarmCompatible()) {
-      final alarmSettingsCooling = AlarmSettings(
-        id: 43,
-        dateTime: DateTime.now(),
-        assetAudioPath: 'assets/ButterflysWings.mp3',
-        loopAudio: true,
-        vibrate: true,
-        volume: 0.8,
-        fadeDuration: 3.0,
-        notificationTitle: 'Tea is now cold enough',
-        notificationBody: 'What should I put here?',
-        enableNotificationOnKill: true,
+
+      // Set up cool-off alarm
+      // Set up brewing alarm
+      DateTime scheduledTime      = timeAtStart.add(Duration(minutes: delayMin));
+      AlarmSettings alarmSettingsCooling = AlarmSettings(
+        id:                       AlarmManager.coolingAlarmID,
+        dateTime:                 scheduledTime,
+        assetAudioPath:           AlarmManager.pathAudio,
+        loopAudio:                AlarmManager.loopAudio,
+        vibrate:                  AlarmManager.vibrate,
+        volume:                   AlarmManager.volume,
+        fadeDuration:             AlarmManager.fadeDuration,
+        notificationTitle:        AlarmManager.coolingTitle,
+        notificationBody:         AlarmManager.coolingBody,
+        enableNotificationOnKill: AlarmManager.enableNotificationOnKill,
       );
+      print("set new cooling alarm");
       Alarm.set(alarmSettings: alarmSettingsCooling);
-    } else {
-      _player.setAsset('sounds/ButterflysWings.mp3');
+
+    } else if (alarmType == "brewing" && !isAlarmCompatible()) {
+
+      _player.setAsset(AlarmManager.pathAudio);
       // AudioHelper.ah.setAudioState(true);
-      _player.play();
+      brewingTimer = Timer(Duration(minutes: delayMin), () {_player.play();});
+      // AudioHelper.ah.setAudioState(false);
+    
+    } else if (alarmType == "cooling" && !isAlarmCompatible()) {
+
+      _player.setAsset(AlarmManager.pathAudio);
+      // AudioHelper.ah.setAudioState(true);
+      coolingTimer = Timer(Duration(minutes: delayMin), () {_player.play();});
       // AudioHelper.ah.setAudioState(false);
     }
+
   }
 
-  static void cancelAlarms(String alarmType) {
+
+  static void cancelAlarms(String alarmType) async {
     if (alarmType == "brewing") {
       if (isAlarmCompatible()) {
-        Alarm.stop(42);
+        await Alarm.stop(AlarmManager.brewingAlarmID);
       } else {
-        _player.stop();
+        brewingTimer.cancel();
+        await _player.stop();
       }
     } else if (alarmType == "cooling") {
-        if (isAlarmCompatible()) {
-        Alarm.stop(43);
+      if (isAlarmCompatible()) {
+        await Alarm.stop(AlarmManager.coolingAlarmID);
       } else {
-        _player.stop();
+        coolingTimer.cancel();
+        await _player.stop();
       }
     } else {
         if (isAlarmCompatible()) {
-          Alarm.stop(42);
-          Alarm.stop(43);
+          await Alarm.stop(AlarmManager.brewingAlarmID);
+          await Alarm.stop(AlarmManager.coolingAlarmID);
       } else {
-        _player.stop();
+        brewingTimer.cancel();
+        coolingTimer.cancel();
+        await _player.stop();
       }
     }
   }
 
-  // Not needed since we can just play an alarm right away when the timer finishes
-  static DateTime setAlarmDateTime(int onsetDelay) {
-    DateTime alarmDateTime = DateTime.now().add(Duration(minutes: onsetDelay));
-    return alarmDateTime;
-  }
 }

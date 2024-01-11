@@ -9,4 +9,6 @@ class Defaults {
   static int coolOffDuration    = 10;
   static int maxCoolOffDuration = 20;
 
+  static bool lightMode         = true;
+
 }

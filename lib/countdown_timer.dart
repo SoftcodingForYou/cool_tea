@@ -10,7 +10,12 @@ import 'package:drink_your_tea/colors.dart';
 
 
 class CountdownTimer extends StatefulWidget {
-  const CountdownTimer({super.key});
+  final DateTime startTime;
+
+  const CountdownTimer({
+    required this.startTime,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CountdownTimer> createState() => _CountdownTimerState();
@@ -46,10 +51,11 @@ class _CountdownTimerState extends State<CountdownTimer> {
                       timer: TimerBasic(
                         format: CountDownTimerFormat.minutesSeconds,
                         duration: brewingDuration,
+                        startTime: widget.startTime,
                       ),
                     ),
 
-                    const SizedBox(height: 100),
+                    const SizedBox(height: 30),
 
                     // Time until drinkable
                     TimerFrame(
@@ -58,24 +64,25 @@ class _CountdownTimerState extends State<CountdownTimer> {
                         format: CountDownTimerFormat.minutesSeconds,
                         duration: coolOffDuration,
                         durationAdded: brewingDuration,
+                        startTime: widget.startTime,
                       ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.only(top: 150),
-                      child: CupertinoButton(
-                        color: ColorManager.alertColor,
-                        onPressed: () {
-                          AlarmManager.cancelAlarms("both");
-                          Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const Home()));
-                        },
-                        child: Text(
-                          "Cancel brewing",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: ColorManager.lightColor,
-                          )
+                    const SizedBox(height: 30),
+
+                    CupertinoButton(
+                      color: ColorManager.alertColor,
+                      onPressed: () {
+                        AlarmManager.cancelAlarms("both");
+                        Navigator.pop(context); // Popping is the only way I have found to interrupt the "TimerCountdown"
+                        // Navigator.push(context,
+                        //   MaterialPageRoute(builder: (context) => const Home()));
+                      },
+                      child: Text(
+                        "Close",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: ColorManager.lightColor,
                         )
                       )
                     )

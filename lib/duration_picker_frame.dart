@@ -49,8 +49,8 @@ class _DurationFrameState extends State<DurationFrame> {
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(
-        vertical: 40,
+      padding: const EdgeInsets.all(
+        15,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -78,25 +78,25 @@ class _DurationFrameState extends State<DurationFrame> {
             crossAxisAlignment: CrossAxisAlignment.center,
 
             children: [
-              CupertinoButton(
-                onPressed: () {
-                  if (currentDuration > minDuration) {
-                    setState(() {
-                      currentDuration = currentDuration - 1;
-                      controllerWC.jumpToItem(currentDuration - 1);
-                      if (widget.durationType == "brewingDuration") {
-                        Durations.brewingDuration = currentDuration;
-                      } else if (widget.durationType == "coolOffDuration") {
-                        Durations.coolOffDuration = currentDuration;
-                      }
-                    });
-                  }
-                },
-                child: Icon(
-                  Icons.arrow_left_rounded,
-                  color: ColorManager.lightColor,
-                )
-              ),
+              // CupertinoButton(
+              //   onPressed: () {
+              //     if (currentDuration > minDuration) {
+              //       setState(() {
+              //         currentDuration = currentDuration - 1;
+              //         controllerWC.jumpToItem(currentDuration - 1);
+              //         if (widget.durationType == "brewingDuration") {
+              //           Durations.brewingDuration = currentDuration;
+              //         } else if (widget.durationType == "coolOffDuration") {
+              //           Durations.coolOffDuration = currentDuration;
+              //         }
+              //       });
+              //     }
+              //   },
+              //   child: Icon(
+              //     Icons.arrow_left_rounded,
+              //     color: ColorManager.lightColor,
+              //   )
+              // ),
               SizedBox(
                 height: 45,
                 width: MediaQuery.of(context).size.width * 0.5,
@@ -112,7 +112,7 @@ class _DurationFrameState extends State<DurationFrame> {
                     });
                   },
                   magnification: 1.2,
-                  squeeze: 0.5,
+                  squeeze: 0.75,
                   perspective: 0.01,
                   maxValue: maxDuration,
                   minValue: minDuration,
@@ -121,29 +121,29 @@ class _DurationFrameState extends State<DurationFrame> {
                   unSelectTextStyle: null,
                   selectTextStyle: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 24,
+                    fontSize: 18,
                   ),
                 ),
               ),
-              CupertinoButton(
-                onPressed: () {
-                  if (currentDuration < maxDuration) {
-                    setState(() {
-                      currentDuration = currentDuration + 1;
-                      controllerWC.jumpToItem(currentDuration - 1);
-                      if (widget.durationType == "brewingDuration") {
-                        Durations.brewingDuration = currentDuration;
-                      } else if (widget.durationType == "coolOffDuration") {
-                        Durations.coolOffDuration = currentDuration;
-                      }
-                    });
-                  }
-                },
-                child: Icon(
-                  Icons.arrow_right_rounded,
-                  color: ColorManager.lightColor,
-                )
-              ),
+              // CupertinoButton(
+              //   onPressed: () {
+              //     if (currentDuration < maxDuration) {
+              //       setState(() {
+              //         currentDuration = currentDuration + 1;
+              //         controllerWC.jumpToItem(currentDuration - 1);
+              //         if (widget.durationType == "brewingDuration") {
+              //           Durations.brewingDuration = currentDuration;
+              //         } else if (widget.durationType == "coolOffDuration") {
+              //           Durations.coolOffDuration = currentDuration;
+              //         }
+              //       });
+              //     }
+              //   },
+              //   child: Icon(
+              //     Icons.arrow_right_rounded,
+              //     color: ColorManager.lightColor,
+              //   )
+              // ),
             ]
           ),
           const Text("minutes"),

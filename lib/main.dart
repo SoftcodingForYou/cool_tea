@@ -31,10 +31,13 @@ class MyApp extends StatelessWidget {
           if (data == null) {
             return const Center(child: CircularProgressIndicator());
           } else if (data) {
+
+            bool lightMode = SPHelper.sp.getBool("lightMode") ?? Defaults.lightMode;
+
             return CupertinoApp(
               debugShowCheckedModeBanner: false,
               theme: CupertinoThemeData(
-                brightness: Brightness.light,
+                brightness: lightMode? Brightness.light : Brightness.dark,
                 textTheme: CupertinoTextThemeData(
                   primaryColor: ColorManager.lightColor,
                   textStyle: TextStyle(
@@ -75,12 +78,14 @@ class MyApp extends StatelessWidget {
     int minDuration         = SPHelper.sp.getInt("minDuration")         ?? Defaults.minDuration;
     int maxCoolOffDuration  = SPHelper.sp.getInt("maxCoolOffDuration")  ?? Defaults.maxCoolOffDuration;
     int maxBrewingDuration  = SPHelper.sp.getInt("maxBrewingDuration")  ?? Defaults.maxBrewingDuration;
+    bool lightMode          = SPHelper.sp.getBool("lightMode")          ?? Defaults.lightMode;
 
     await SPHelper.sp.saveInt("brewingDuration",    brewingDuration);
     await SPHelper.sp.saveInt("coolOffDuration",    coolOffDuration);
     await SPHelper.sp.saveInt("minDuration",        minDuration);
     await SPHelper.sp.saveInt("maxCoolOffDuration", maxCoolOffDuration);
     await SPHelper.sp.saveInt("maxBrewingDuration", maxBrewingDuration);
+    await SPHelper.sp.saveBool("lightMode", lightMode);
 
     gotSettings = true;
     return gotSettings;

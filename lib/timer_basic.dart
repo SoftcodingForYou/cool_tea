@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:drink_your_tea/timer_alarms.dart';
 import 'package:drink_your_tea/colors.dart';
@@ -10,35 +9,38 @@ class TimerBasic extends StatelessWidget {
   final CountDownTimerFormat format;
   final int duration;
   final int durationAdded;
+  final DateTime startTime;
 
 
   const TimerBasic({
     required this.format,
     required this.duration,
     this.durationAdded = 0,
+    required this.startTime,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
+    print(duration);
+    print(durationAdded);
+
     return (duration > 0)? TimerCountdown(
       format: format,
-      endTime: DateTime.now().add(
+      endTime: startTime.add(
         Duration(
           days: 0,
           hours: 0,
-          minutes: 0,
-          seconds: duration + durationAdded,
+          minutes: duration + durationAdded,
+          seconds: 1,
         ),
       ),
       onEnd: () {
         if (durationAdded == 0) {
           showTimerEndedPopup(context, "brewing");
-          AlarmManager.setAlarm("brewing");
         } else {
           showTimerEndedPopup(context, "cooling");
-          AlarmManager.setAlarm("cooling");
         }
       },
       timeTextStyle: TextStyle(
@@ -69,7 +71,7 @@ class TimerBasic extends StatelessWidget {
       hoursDescription: "hours",
       minutesDescription: "minutes",
       secondsDescription: "seconds",
-    ) : const Text("No timer set");
+    ) : const Padding(padding: EdgeInsets.all(15), child: Text("No timer set"));
   }
 
 
@@ -79,10 +81,10 @@ class TimerBasic extends StatelessWidget {
     String imagePath      = "";
     if (alarmType == "brewing") {
       dialogTitle         = "Your tea is done brewing";
-      imagePath           = "animations/tea-79.gif";
+      imagePath           = "assets/tea-79.gif";
     } else if (alarmType == "cooling") {
       dialogTitle         = "Tea is now cool 8-)";
-      imagePath           = "animations/tea-51.gif";
+      imagePath           = "assets/tea-51.gif";
     }
 
     showCupertinoModalPopup<void>(

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drink_your_tea/colors.dart';
 
@@ -17,8 +16,8 @@ class TimerFrame extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(
-        vertical: 40,
+      padding: const EdgeInsets.all(
+        15,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
