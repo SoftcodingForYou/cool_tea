@@ -1,6 +1,6 @@
 {
-    "name": "drink_your_tea",
-    "short_name": "drink_your_tea",
+    "name": "cool_tea",
+    "short_name": "cool_tea",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

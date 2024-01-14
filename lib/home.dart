@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:drink_your_tea/setup.dart';
+import 'package:cool_tea/setup.dart';
 
 
 class Home extends StatefulWidget {

@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drink_your_tea/countdown_timer.dart';
-import 'package:drink_your_tea/user_settings.dart';
-import 'package:drink_your_tea/duration_picker_frame.dart';
-import 'package:drink_your_tea/durations.dart';
-import 'package:drink_your_tea/colors.dart';
-import 'package:drink_your_tea/timer_alarms.dart';
-import 'package:drink_your_tea/defaults.dart';
-import 'package:drink_your_tea/main.dart';
+import 'package:cool_tea/countdown_timer.dart';
+import 'package:cool_tea/user_settings.dart';
+import 'package:cool_tea/duration_picker_frame.dart';
+import 'package:cool_tea/durations.dart';
+import 'package:cool_tea/colors.dart';
+import 'package:cool_tea/timer_alarms.dart';
+import 'package:cool_tea/defaults.dart';
+import 'package:cool_tea/main.dart';
 
 
 class Setup extends StatefulWidget {
@@ -28,7 +28,7 @@ class _SetupState extends State<Setup> {
   Widget build(BuildContext context) {
 
 
-    bool lightMode = SPHelper.sp.getBool("lightMode") ?? Defaults.lightMode;
+    bool lightMode              = SPHelper.sp.getBool("lightMode") ?? Defaults.lightMode;
 
     return CupertinoPageScaffold(
         child: SafeArea(
@@ -55,52 +55,79 @@ class _SetupState extends State<Setup> {
                     durationType: "coolOffDuration",
                   ),
 
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 45),
 
-                  CupertinoButton(
-                    color: ColorManager.backgroundStrong,
-                    onPressed: () {
-                      saveTimers();
+                  Container(
+                    width: MediaQuery.sizeOf(context).width * 0.5,
+                    decoration: BoxDecoration(
+                      color: ColorManager.alertColor,
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColorManager.alertColor.withAlpha(200),
+                          blurRadius: 15,
+                          offset: const Offset(0, 0), // Shadow position
+                        ),
+                      ],
+                    ),
+                    child: CupertinoButton(
+                      color: Colors.transparent,
+                      onPressed: () {
+                        saveTimers();
 
-                      DateTime startTime = DateTime.now();
-                      AlarmManager.setAlarm("brewing", startTime,
-                        Durations.brewingDuration);
-                      if (Durations.coolOffDuration > 0) {
-                        AlarmManager.setAlarm("cooling", startTime,
-                          Durations.coolOffDuration + Durations.brewingDuration);
-                      }
-                      Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CountdownTimer(startTime: startTime)));
-                    },
-                    child: Text(
-                      "Click here to start your timers",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: ColorManager.lightColor,
+                        DateTime startTime = DateTime.now();
+                        AlarmManager.setAlarm("brewing", startTime,
+                          Durations.brewingDuration);
+                        if (Durations.coolOffDuration > 0) {
+                          AlarmManager.setAlarm("cooling", startTime,
+                            Durations.coolOffDuration + Durations.brewingDuration);
+                        }
+                        Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => CountdownTimer(startTime: startTime)));
+                      },
+                      child: Text(
+                        "Start",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: ColorManager.lightColor,
+                        )
                       )
-                    )
+                    ),
                   ),
 
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 45),
 
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CupertinoButton(
-                        padding: const EdgeInsets.all(5),
-                        borderRadius: const BorderRadius.all(Radius.circular(50)),
-                        color: ColorManager.backgroundStrong,
-                        onPressed: () {
-                          showInfoPopup(context);
-                        },
-                        child: Icon(
-                          Icons.question_mark_rounded,
-                          color: ColorManager.lightColor,
-                        )
-                      ),
+                      Padding(padding: EdgeInsets.all(15), child: Container(
+                        decoration: BoxDecoration(
+                          color: ColorManager.alertColor,
+                          borderRadius: BorderRadius.circular(50),
+                          boxShadow: [
+                            BoxShadow(
+                              color: ColorManager.alertColor.withAlpha(200),
+                              blurRadius: 15,
+                              offset: const Offset(0, 0), // Shadow position
+                            ),
+                          ],
+                        ),
+                        child: CupertinoButton(
+                          padding: const EdgeInsets.all(5),
+                          borderRadius: const BorderRadius.all(Radius.circular(50)),
+                          color: Colors.transparent,
+                          onPressed: () {
+                            showInfoPopup(context);
+                          },
+                          child: Icon(
+                            Icons.question_mark_rounded,
+                            color: ColorManager.lightColor,
+                          )
+                        ),
+                      ),),
                       const Spacer(),
-                      Text("Toggle dark mode",
+                      Text("Dark mode",
                         style: TextStyle(
                           color: lightMode? ColorManager.alertColor : ColorManager.lightColor
                         ),

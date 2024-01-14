@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:drink_your_tea/colors.dart';
+import 'package:cool_tea/colors.dart';
 
 
 class TimerFrame extends StatelessWidget {

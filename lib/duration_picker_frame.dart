@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drink_your_tea/durations.dart';
+import 'package:cool_tea/durations.dart';
 import 'package:wheel_chooser/wheel_chooser.dart';
-import 'package:drink_your_tea/colors.dart';
+import 'package:cool_tea/colors.dart';
 
 
 class DurationFrame extends StatefulWidget {

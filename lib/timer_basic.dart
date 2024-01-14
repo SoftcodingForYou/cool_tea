@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
-import 'package:drink_your_tea/timer_alarms.dart';
-import 'package:drink_your_tea/colors.dart';
+import 'package:cool_tea/timer_alarms.dart';
+import 'package:cool_tea/colors.dart';
 
 
 class TimerBasic extends StatelessWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:drink_your_tea/home.dart';
-import 'package:drink_your_tea/user_settings.dart';
+import 'package:cool_tea/home.dart';
+import 'package:cool_tea/user_settings.dart';
 import 'package:flutter/material.dart';
-import 'package:drink_your_tea/defaults.dart';
-import 'package:drink_your_tea/colors.dart';
+import 'package:cool_tea/defaults.dart';
+import 'package:cool_tea/colors.dart';
 import 'package:alarm/alarm.dart';
 
 
@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
     bool gotSettings        = false;
     await SPHelper.sp.initSharedPreferences();
 
-    int brewingDuration     = SPHelper.sp.getInt("brewingduration")     ?? Defaults.brewingDuration;
+    int brewingDuration     = SPHelper.sp.getInt("brewingDuration")     ?? Defaults.brewingDuration;
     int coolOffDuration     = SPHelper.sp.getInt("coolOffDuration")     ?? Defaults.coolOffDuration;
     int minDuration         = SPHelper.sp.getInt("minDuration")         ?? Defaults.minDuration;
     int maxCoolOffDuration  = SPHelper.sp.getInt("maxCoolOffDuration")  ?? Defaults.maxCoolOffDuration;

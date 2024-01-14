@@ -1,5 +1,5 @@
-import 'package:drink_your_tea/user_settings.dart';
-import 'package:drink_your_tea/defaults.dart';
+import 'package:cool_tea/user_settings.dart';
+import 'package:cool_tea/defaults.dart';
 
 class Durations {
   static int brewingDuration     = SPHelper.sp.getInt("brewingduration")     ?? Defaults.brewingDuration;
